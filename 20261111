@@ -1,0 +1,80 @@
+"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<string>
+#include<set>
+using namespace std;
+using ll = long long;
+int main() {
+    int n, s;
+    cin >> n >> s;
+    vector<int> val(n);
+    vector<bool> type(n);
+    vector<bool> broken(n, false);
+    for (int i = 0; i < n; i++) {
+        int trash1,trash2;
+        cin >> trash1 >> trash2;
+        type[i] = trash1;
+        val[i] = trash2;
+    }
+    int cnt = 0;
+    int pos = s-1;
+    int power = 1;
+    int mult = 1;
+    for (int i = 0; i < 1000000; i++) {
+        if (pos < 0 || pos >= n) {
+            break;
+        }
+        if (type[pos]) {
+            if (power >= val[pos] && !(broken[pos])) {
+                cnt++;
+                broken[pos] = 1;
+            }
+        }
+        else {
+            power += val[pos];
+            mult *= -1;
+        }
+        pos += (power * mult);
+    }
+    cout << cnt;
+}"
+"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<string>
+#include<set>
+using namespace std;
+using ll = long long;
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        set<int> ans;
+        vector<int> hay(n);
+        for (int i = 0; i < n; i++) {
+            cin >> hay[i];
+        }
+        for (int i = 0; i < n - 1; i++) {
+            if (hay[i] == hay[i + 1]) ans.insert(hay[i]);
+        }
+        for (int i = 0; i < n - 2; i++) {
+            if (hay[i] == hay[i + 2]) ans.insert(hay[i]);
+        }
+        if (ans.size() == 0) cout << -1;
+        else {
+            int cnt = 0;
+            for (int i : ans) {
+                cout << i;
+                cnt++;
+                if (cnt != ans.size()) cout << "" "";
+            }
+        }
+        cout << '\n';
+    }
+}
+"
