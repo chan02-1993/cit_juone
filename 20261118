@@ -1,0 +1,323 @@
+"**Code does not work**
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<string>
+#include<set>
+#include<numeric>
+using namespace std;
+using ll = long long;
+int main() {
+        int n, q;
+        cin >> n >> q;
+        vector<bool> vals((n + 1) / 2);
+        vector<bool> op((n - 1) / 2);
+        vector<bool> front((n + 1) / 2);
+        vector<bool> back((n + 1) / 2);
+        vector<bool> before(3);
+        for (int i = 0; i < n; i++) {
+                string in;
+                cin >> in;
+                if (i % 2 == 0) {
+                        if (in == ""false"") {
+                                vals[i / 2] = false;
+                        }
+                        else vals[i / 2] = true;
+                }
+                else {
+                        if (in == ""and"") {
+                                op[(i - 1) / 2] = true;
+                        }
+                        else op[(i - 1) / 2] = false;
+                }
+        }
+        front[0] = vals[0];
+        if (op[0]) front[1] = vals[0] and vals[1];
+        else front[1] = vals[0] or vals[1];
+        before[0] = vals[0];
+        before[1] = op[0];
+        before[2] = vals[1];
+        for (int i = 2; i < (n + 1) / 2; i++) {
+                if (op[i - 1]) {
+                        if (before[1]) {
+                                front[i] = before[0] and before[2] and vals[i];
+                        }
+                        else front[i] = before[0] and before[2] or vals[i];
+                }
+                else {
+                        if (before[1]) {
+                                front[i] = before[0] or before[2] and vals[i];
+                        }
+                        else front[i] = before[0] or before[2] or vals[i];
+                }
+                if (before[1]) before[0] = before[0] and before[2];
+                else before[0] = before[0] or before[2];
+                before[1] = op[i - 1];
+                if (i != (n - 1) / 2) before[2] = vals[i+1];
+        }
+
+
+
+
+
+
+        reverse(vals.begin(), vals.end());
+        reverse(op.begin(), op.end());
+        back[0] = vals[0];
+        if (op[0]) back[1] = vals[0] and vals[1];
+        else back[1] = vals[0] or vals[1];
+        before[0] = vals[0];
+        before[1] = op[0];
+        before[2] = vals[1];
+        for (int i = 2; i < (n + 1) / 2; i++) {
+                if (op[i - 1]) {
+                        if (before[1]) {
+                                back[i] = before[0] and before[2] and vals[i];
+                        }
+                        else back[i] = before[0] and before[2] or vals[i];
+                }
+                else {
+                        if (before[1]) {
+                                back[i] = before[0] or before[2] and vals[i];
+                        }
+                        else back[i] = before[0] or before[2] or vals[i];
+                }
+                if (before[1]) before[0] = before[0] and before[2];
+                else before[0] = before[0] or before[2];
+                before[1] = op[i - 1];
+                if (i != (n - 1) / 2) before[2] = vals[i+1];
+        }
+        reverse(vals.begin(), vals.end());
+        reverse(op.begin(), op.end());
+        while (q--) {
+                int l, r;
+                bool k;
+                cin >> l >> r >> k;
+                if (l == 1) {
+                        if (r == n) {
+                                cout << ""Y"";
+                        }
+                        else {
+                                if (op[(r -1) / 2]) {
+                                        if ((k and back[(n - r) / 2 - 1]) == k) cout << ""Y"";
+                                        else cout << ""N"";
+                                }
+                                else {
+                                        if ((k or back[(n - r) / 2 - 1]) == k) cout << ""Y"";
+                                        else cout << ""N"";
+                                }
+                        }
+                }
+                else {
+                        if (r == n) {
+                                if (op[(l - 3) / 2]) {
+                                        if ((front[(l - 3) / 2] and k) == k) cout << ""Y"";
+                                        else cout << ""N"";
+                                }
+                                else {
+                                        if ((front[(l - 3) / 2] or k) == k) cout << ""Y"";
+                                        else cout << ""N"";
+                                }
+                        }
+                        else {
+                                if (op[(r - 1) / 2]) {
+                                        if (op[(l - 3) / 2]) {
+                                                if ((front[(l - 3) / 2] and k and back[(n - r) / 2 - 1]) == k) cout << ""Y"";
+                                                else cout << ""N"";
+                                        }
+                                        else {
+                                                if ((front[(l - 3) / 2] or k and back[(n - r) / 2 - 1]) == k) cout << ""Y"";
+                                                else cout << ""N"";
+                                        }
+                                }
+                                else {
+                                        if (op[(l - 3) / 2]) {
+                                                if ((front[(l - 3) / 2] and k or back[(n - r) / 2 - 1]) == k) cout << ""Y"";
+                                                else cout << ""N"";
+                                        }
+                                        else {
+                                                if ((front[(l - 3) / 2] or k or back[(n - r) / 2 - 1]) == k) cout << ""Y"";
+                                                else cout << ""N"";
+                                        }
+                                }
+                        }
+                }
+        }
+
+}"
+"#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<string>
+#include<set>
+#include<numeric>
+using namespace std;
+using ll = long long;
+int main() {
+	int n, p;
+	ll now = 1;
+	cin >> n >> p;
+	vector<vector<int>> posts(p, vector<int>(2));
+	vector<vector<ll>> dist(1001, vector<ll>(1001));
+	for (int i = 0; i < p; i++) {
+		cin >> posts[i][0] >> posts[i][1];
+	}
+	for (int i = 0; i < p; i++) {
+		if (posts[i][0] == posts[(i + 1) % p][0]) {
+			if(posts[i][1]< posts[(i + 1) % p][1]){
+				for (int j = posts[i][1] + 1; j <= posts[(i + 1) % p][1]; j++) {
+					dist[posts[i][0]][j] = now;
+					now++;
+				}
+			}
+			else {
+				for (int j = posts[i][1] -1; j >= posts[(i + 1) % p][1]; j--) {
+					dist[posts[i][0]][j] = now;
+					now++;
+				}
+			}
+		}
+		else {
+			if (posts[i][0] < posts[(i + 1) % p][0]) {
+				for (int j = posts[i][0] + 1; j <= posts[(i + 1) % p][0]; j++) {
+					dist[j][posts[i][1]] = now;
+					now++;
+				}
+			}
+			else {
+				for (int j = posts[i][0] - 1; j >= posts[(i + 1) % p][0]; j--) {
+					dist[j][posts[i][1]] = now;
+					now++;
+				}
+			}
+		}
+	}
+	dist[posts[0][0]][posts[0][1]] = 0;
+	now--;
+	while(n--) {
+		int x1, y1, x2, y2;
+		cin >> x1 >> y1 >> x2 >> y2;
+		cout << min(abs(dist[x2][y2] - dist[x1][y1]), now - abs(dist[x2][y2] - dist[x1][y1]))<<""\n"";
+	}
+}"
+"#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<string>
+#include<set>
+#include<numeric>
+using namespace std;
+using ll = long long;
+int main() {
+        int n, q;
+        cin >> n >> q;
+        vector<int> c(n);
+        vector<int> t(n);
+        vector<int> test(n);
+        for (int i = 0; i < n; i++) {
+                cin >> c[i];
+        }
+        for (int i = 0; i < n; i++) {
+                cin >> t[i];
+        }
+        for (int i = 0; i < n; i++) {
+                test[i] = c[i] - t[i];
+        }
+        sort(test.begin(), test.end());
+        while (q--) {
+                int v, s;
+                cin >> v >> s;
+                auto it = lower_bound(test.begin(), test.end(), s+1) - test.begin();
+                if (s >= test[n - 1]) {
+                        cout << ""NO\n"";
+                        continue;
+                }
+                if (n-it >= v) cout << ""YES"";
+                else cout << ""NO"";
+                cout << ""\n"";
+        }
+}"
+"#include <iostream>
+#include <vector>
+#include <algorithm>
+#include<string>
+#include<set>
+#include<numeric>
+using namespace std;
+using ll = long long;
+int main() {
+
+        ll n, m;
+        bool flag = true;
+        string cows_in;
+        cin >> n >> m;
+        cin >> cows_in;
+        vector<ll> cap_in(n);
+        vector<ll> cap(n);
+        string cows(n, '\0');
+        for (int i = 0; i < n; i++) {
+                cin >> cap_in[i];
+        }
+        for (int i = 1; i < n; i++) {
+                if (cows_in[i] != cows_in[i - 1]){
+                        flag=false;
+                        break;
+                }
+        }
+        ll total = accumulate(cap_in.begin(), cap_in.end(), (ll)0);
+        if (flag) cout << total;
+        else {
+                vector<ll> groups;
+                if (!(cows_in[0] == 'R' && cows_in[n-1] == 'L')) {
+                        for (int i = 1; i < n; i++) {
+                                if (cows_in[i] == 'R' && cows_in[i - 1] == 'L') {
+                                        int idx = 0;
+                                        for (int j = i; j < n; j++) {
+                                                cows[idx] = cows_in[j];
+                                                cap[idx] = cap_in[j];
+                                                idx++;
+                                        }
+                                        for (int j = 0; j < i; j++) {
+                                                cows[idx] = cows_in[j];
+                                                cap[idx] = cap_in[j];
+                                                idx++;
+                                        }
+                                        break;
+                                }
+                        }
+                }
+                else {
+                        cows = cows_in;
+                        cap = cap_in;
+                }
+                ll cur = cap[0];
+                for (int i = 1; i < n; i++) {
+                        if (cows[i] == 'L') {
+                                if (cows[i - 1] == 'L') {
+                                        cur += cap[i];
+                                }
+                                else {
+                                        if (cur) cur-=cap[i - 1];
+                                        groups.push_back(cur);
+                                        cur = 0;
+                                }
+                        }
+                        else {
+                                if (cows[i - 1] == 'R') {
+                                        cur += cap[i];
+                                }
+                                else {
+                                        groups.push_back(cur);
+                                        cur = cap[i];
+                                }
+                        }
+                }
+                groups.push_back(cur);
+                ll ans = total;
+                for (ll i : groups) {
+                        ans -= min(i, (ll)m);
+                }
+                cout << ans;
+        }
+}"
